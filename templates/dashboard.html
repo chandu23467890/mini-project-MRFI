@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#4caf50">
+    <meta name="msapplication-TileColor" content="#4caf50">
+    <meta name="application-name" content="MRFI">
+    <meta name="ws-port" content="{{ websocket_port }}">
+    <title>MRFI - Metabolic Resonance Field Intelligence</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="dashboard-shell">
+    <header class="topbar">
+        <div>
+            <p class="eyebrow">MRFI - Metabolic Resonance Field Intelligence</p>
+            <h1>Resonance Field Dashboard</h1>
+        </div>
+        <div class="topbar-actions">
+            <div class="user-pill">
+                <span id="user-name">Loading...</span>
+            </div>
+            <button onclick="logout()" class="btn btn-secondary" type="button">Logout</button>
+        </div>
+    </header>
+
+    <main class="dashboard-main">
+        <section class="hero-grid">
+            <article class="panel score-panel">
+                <div class="panel-head">
+                    <h2>Current Stability</h2>
+                    <span id="state-badge" class="status-badge">--</span>
+                </div>
+                <canvas id="stability-gauge" width="220" height="220"></canvas>
+                <p class="panel-foot">Confidence <strong id="confidence-level">--</strong>%</p>
+            </article>
+
+            <article class="panel trajectory-panel">
+                <div class="panel-head">
+                    <h2>Trajectory</h2>
+                    <span id="trajectory-badge" class="trend-badge">--</span>
+                </div>
+                <div class="metric-strip">
+                    <div><span>90d risk</span><strong id="diabetes-risk">--</strong></div>
+                    <div><span>Next assessment</span><strong id="next-check">--</strong></div>
+                    <div><span>Data quality</span><strong id="data-quality-grade">--</strong></div>
+                </div>
+                <canvas id="trend-chart" height="120"></canvas>
+            </article>
+
+            <article class="panel quick-panel">
+                <div class="panel-head">
+                    <h2>Actions</h2>
+                </div>
+                <div class="action-stack">
+                    <button onclick="openMeasurementModal()" class="btn btn-primary" type="button">Log Measurement</button>
+                    <button onclick="openMealModal()" class="btn btn-accent" type="button">Log Meal</button>
+                    <button onclick="refreshDashboard()" class="btn btn-secondary" type="button">Refresh Dashboard</button>
+                </div>
+            </article>
+        </section>
+
+        <section class="component-grid">
+            <article class="mini-panel"><span>Glucose Control</span><strong id="glucose-score">--</strong><div class="bar"><div id="glucose-bar"></div></div></article>
+            <article class="mini-panel"><span>Trend Stability</span><strong id="trend-score">--</strong><div class="bar"><div id="trend-bar"></div></div></article>
+            <article class="mini-panel"><span>Insulin Sensitivity</span><strong id="insulin-score">--</strong><div class="bar"><div id="insulin-bar"></div></div></article>
+            <article class="mini-panel"><span>Lifestyle</span><strong id="lifestyle-score">--</strong><div class="bar"><div id="lifestyle-bar"></div></div></article>
+        </section>
+
+        <section class="content-grid">
+            <article id="insights-panel" class="panel">
+                <div class="panel-head"><h2>Key Insights</h2></div>
+                <p class="muted">Loading insights...</p>
+            </article>
+            <article id="recommendations-panel" class="panel">
+                <div class="panel-head"><h2>Personalized Recommendations</h2></div>
+                <p class="muted">Loading recommendations...</p>
+            </article>
+        </section>
+
+        <section class="panel">
+            <div class="panel-head">
+                <h2>Recent Measurements</h2>
+                <button onclick="openMeasurementModal()" class="btn btn-primary" type="button">Log Measurement</button>
+            </div>
+            <div id="measurements-table" class="table-wrap"></div>
+        </section>
+    </main>
+
+    <div id="measurement-modal" class="modal hidden">
+        <div class="modal-card">
+            <h3>Log Health Measurement</h3>
+            <form id="measurement-form" class="space-y-3">
+                <select id="measurement-type" class="input" required>
+                    <option value="fasting_glucose">Fasting Glucose</option>
+                    <option value="postprandial_glucose">Postprandial Glucose</option>
+                    <option value="random_glucose">Random Glucose</option>
+                    <option value="hba1c">HbA1c</option>
+                    <option value="insulin">Insulin</option>
+                    <option value="systolic_bp">Systolic BP</option>
+                    <option value="diastolic_bp">Diastolic BP</option>
+                    <option value="weight">Weight</option>
+                    <option value="physical_activity">Physical Activity</option>
+                    <option value="sleep_hours">Sleep Hours</option>
+                </select>
+                <input id="measurement-value" class="input" type="number" step="any" placeholder="Value" required>
+                <input id="measurement-timestamp" class="input" type="datetime-local" required>
+                <select id="measurement-context" class="input">
+                    <option value="">Meal context</option>
+                    <option value="fasting">Fasting</option>
+                    <option value="pre_meal">Pre-meal</option>
+                    <option value="post_meal_1h">1 hour after meal</option>
+                    <option value="post_meal_2h">2 hours after meal</option>
+                    <option value="bedtime">Bedtime</option>
+                </select>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('measurement-modal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="meal-modal" class="modal hidden">
+        <div class="modal-card">
+            <h3>Log Meal</h3>
+            <form id="meal-form" class="space-y-3" enctype="multipart/form-data">
+                <input id="meal-photo" type="file" accept="image/*" class="input">
+                <img id="meal-preview" class="hidden preview" alt="Meal preview">
+                <select id="meal-type" class="input">
+                    <option value="pre_meal">Before meal</option>
+                    <option value="post_meal_1h">1 hour after meal</option>
+                    <option value="post_meal_2h">2 hours after meal</option>
+                </select>
+                <input id="meal-carbs" class="input" type="number" step="1" placeholder="Carbohydrates in grams (optional)">
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('meal-modal')">Cancel</button>
+                    <button type="submit" class="btn btn-accent">Log Meal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>

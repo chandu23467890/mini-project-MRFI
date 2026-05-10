@@ -1,0 +1,86 @@
+[
+  {
+    "test": "Health Check",
+    "success": true,
+    "message": "Status: ok, WebSocket port: 8766",
+    "timestamp": "2026-05-03T21:24:42.109883"
+  },
+  {
+    "test": "User Registration",
+    "success": true,
+    "message": "Registration successful",
+    "timestamp": "2026-05-03T21:24:42.541070"
+  },
+  {
+    "test": "User Login",
+    "success": true,
+    "message": "Login successful for user: Test User",
+    "timestamp": "2026-05-03T21:24:42.911129"
+  },
+  {
+    "test": "Get Profile",
+    "success": true,
+    "message": "Profile retrieved for: Test User",
+    "timestamp": "2026-05-03T21:24:42.921139"
+  },
+  {
+    "test": "Add Measurement 1",
+    "success": false,
+    "message": "Status: 422",
+    "timestamp": "2026-05-03T21:24:42.928187"
+  },
+  {
+    "test": "Add Measurement 2",
+    "success": false,
+    "message": "Status: 422",
+    "timestamp": "2026-05-03T21:24:42.938226"
+  },
+  {
+    "test": "Add Measurement 3",
+    "success": false,
+    "message": "Status: 422",
+    "timestamp": "2026-05-03T21:24:42.950442"
+  },
+  {
+    "test": "Add Measurement 4",
+    "success": false,
+    "message": "Status: 422",
+    "timestamp": "2026-05-03T21:24:42.958947"
+  },
+  {
+    "test": "Add Measurement 5",
+    "success": false,
+    "message": "Status: 422",
+    "timestamp": "2026-05-03T21:24:42.968554"
+  },
+  {
+    "test": "Add Measurement 6",
+    "success": false,
+    "message": "Status: 422",
+    "timestamp": "2026-05-03T21:24:42.977267"
+  },
+  {
+    "test": "Add Multiple Measurements",
+    "success": true,
+    "message": "Successfully added 14 measurements",
+    "timestamp": "2026-05-03T21:24:43.378868"
+  },
+  {
+    "test": "Get Measurements",
+    "success": true,
+    "message": "Retrieved 14 measurements",
+    "timestamp": "2026-05-03T21:24:43.390017"
+  },
+  {
+    "test": "Stability Calculation",
+    "success": true,
+    "message": "Stability score: 56.0",
+    "timestamp": "2026-05-03T21:24:43.405509"
+  },
+  {
+    "test": "Recommendations",
+    "success": true,
+    "message": "Generated 3 recommendations",
+    "timestamp": "2026-05-03T21:24:43.434701"
+  }
+]

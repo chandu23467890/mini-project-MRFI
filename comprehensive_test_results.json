@@ -1,0 +1,104 @@
+[
+  {
+    "test": "UI: Login Page",
+    "success": true,
+    "message": "Status: 200",
+    "timestamp": "2026-05-03T21:30:49.053862"
+  },
+  {
+    "test": "UI: Health Check",
+    "success": true,
+    "message": "Status: 200",
+    "timestamp": "2026-05-03T21:30:49.061398"
+  },
+  {
+    "test": "UI: Favicon",
+    "success": true,
+    "message": "Status: 200",
+    "timestamp": "2026-05-03T21:30:49.126582"
+  },
+  {
+    "test": "Login: Sarah Johnson",
+    "success": true,
+    "message": "Successfully logged in",
+    "timestamp": "2026-05-03T21:30:49.545700"
+  },
+  {
+    "test": "Login: Raj Patel",
+    "success": true,
+    "message": "Successfully logged in",
+    "timestamp": "2026-05-03T21:30:49.935850"
+  },
+  {
+    "test": "Login: Maria Garcia",
+    "success": true,
+    "message": "Successfully logged in",
+    "timestamp": "2026-05-03T21:30:50.313640"
+  },
+  {
+    "test": "Login: James Chen",
+    "success": true,
+    "message": "Successfully logged in",
+    "timestamp": "2026-05-03T21:30:50.702010"
+  },
+  {
+    "test": "Login: Amanda Williams",
+    "success": true,
+    "message": "Successfully logged in",
+    "timestamp": "2026-05-03T21:30:51.068357"
+  },
+  {
+    "test": "All Users Login",
+    "success": true,
+    "message": "5/5 users logged in successfully",
+    "timestamp": "2026-05-03T21:30:51.069370"
+  },
+  {
+    "test": "Stability: Sarah Johnson",
+    "success": true,
+    "message": "Score: 82.2, State: PREDIABETIC_LATE",
+    "timestamp": "2026-05-03T21:30:51.638281"
+  },
+  {
+    "test": "Stability: Raj Patel",
+    "success": true,
+    "message": "Score: 56.0, State: PREDIABETIC_EARLY",
+    "timestamp": "2026-05-03T21:30:52.052130"
+  },
+  {
+    "test": "Stability: Maria Garcia",
+    "success": true,
+    "message": "Score: 86.7, State: PREDIABETIC_LATE",
+    "timestamp": "2026-05-03T21:30:52.495762"
+  },
+  {
+    "test": "Recommendations: Sarah Johnson",
+    "success": true,
+    "message": "Generated 2 recommendations",
+    "timestamp": "2026-05-03T21:30:52.911148"
+  },
+  {
+    "test": "Recommendations: Raj Patel",
+    "success": true,
+    "message": "Generated 3 recommendations",
+    "timestamp": "2026-05-03T21:30:53.303659"
+  },
+  {
+    "test": "Measurement History",
+    "success": true,
+    "message": "Retrieved 209 measurements",
+    "timestamp": "2026-05-03T21:30:53.707549"
+  },
+  {
+    "test": "Stability History",
+    "success": true,
+    "message": "Retrieved 1 stability records",
+    "timestamp": "2026-05-03T21:30:53.716666"
+  },
+  {
+    "test": "Add Measurement",
+    "success": false,
+    "message": "Status: 422",
+    "timestamp": "2026-05-03T21:30:54.111514"
+  }
+]

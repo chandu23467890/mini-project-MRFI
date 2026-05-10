@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#4caf50">
+    <meta name="msapplication-TileColor" content="#4caf50">
+    <meta name="application-name" content="MRFI">
+    <title>MRFI - Metabolic Resonance Field Intelligence</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="auth-shell">
+    <main class="auth-grid">
+        <section class="auth-panel auth-panel--hero">
+            <p class="eyebrow">MRFI - Metabolic Resonance Field Intelligence</p>
+            <h1>A Stability-Centric AI Framework for Diabates Prediction and Recommendation</h1>
+            <p class="hero-copy">Transform traditional glucose monitoring into sophisticated multi-dimensional intelligence platform that detects metabolic patterns before clinical manifestation.</p>
+            <div class="hero-card">
+                <p class="hero-metric-label">MRFI Resonance Field Capabilities</p>
+                <ul class="hero-list">
+                    <li>Resonance field stability score with confidence intervals</li>
+                    <li>Quantum-inspired prediabetic transition-state detection</li>
+                    <li>Multi-dimensional HOMA-IR and trajectory field forecasts</li>
+                </ul>
+            </div>
+        </section>
+        <section class="auth-panel auth-panel--form">
+            <div class="tabs">
+                <button id="login-tab" class="tab is-active" type="button">Login</button>
+                <button id="register-tab" class="tab" type="button">Register</button>
+            </div>
+
+            <form id="login-form" class="space-y-4">
+                <h2>Secure clinician-style access</h2>
+                <input id="login-email" class="input" type="email" placeholder="Email" required>
+                <input id="login-password" class="input" type="password" placeholder="Password" required>
+                <button class="btn btn-primary" type="submit">Login</button>
+            </form>
+
+            <form id="register-form" class="space-y-4 hidden">
+                <h2>Create a monitoring account</h2>
+                <input id="register-name" class="input" type="text" placeholder="Full name" required>
+                <input id="register-email" class="input" type="email" placeholder="Email" required>
+                <input id="register-password" class="input" type="password" placeholder="Password" required>
+                <input id="register-ethnicity" class="input" type="text" placeholder="Ethnicity (optional)">
+                <select id="register-diet" class="input">
+                    <option value="">Dietary preference</option>
+                    <option value="vegetarian">Vegetarian</option>
+                    <option value="vegan">Vegan</option>
+                    <option value="omnivore">Omnivore</option>
+                </select>
+                <select id="register-activity" class="input">
+                    <option value="">Activity level</option>
+                    <option value="sedentary">Sedentary</option>
+                    <option value="light">Light</option>
+                    <option value="moderate">Moderate</option>
+                    <option value="active">Active</option>
+                </select>
+                <label class="checkbox-row">
+                    <input id="register-family-history" type="checkbox">
+                    <span>Family history of diabetes</span>
+                </label>
+                <button class="btn btn-primary" type="submit">Register</button>
+            </form>
+        </section>
+    </main>
+
+    <script>
+        const loginTab = document.getElementById('login-tab');
+        const registerTab = document.getElementById('register-tab');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+
+        function switchTab(mode) {
+            const loginMode = mode === 'login';
+            loginTab.classList.toggle('is-active', loginMode);
+            registerTab.classList.toggle('is-active', !loginMode);
+            loginForm.classList.toggle('hidden', !loginMode);
+            registerForm.classList.toggle('hidden', loginMode);
+        }
+
+        loginTab.addEventListener('click', () => switchTab('login'));
+        registerTab.addEventListener('click', () => switchTab('register'));
+
+        async function apiRequest(path, options = {}) {
+            const response = await fetch(`/api${path}`, {
+                ...options,
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(options.headers || {})
+                }
+            });
+            const payload = await response.json();
+            if (!response.ok) throw new Error(payload.error || 'Request failed');
+            return payload;
+        }
+
+        loginForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            try {
+                const payload = await apiRequest('/auth/login', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        email: document.getElementById('login-email').value,
+                        password: document.getElementById('login-password').value
+                    })
+                });
+                localStorage.setItem('token', payload.token);
+                window.location.href = '/dashboard';
+            } catch (error) {
+                Swal.fire('Login failed', error.message, 'error');
+            }
+        });
+
+        registerForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            try {
+                await apiRequest('/auth/register', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        name: document.getElementById('register-name').value,
+                        email: document.getElementById('register-email').value,
+                        password: document.getElementById('register-password').value,
+                        ethnicity: document.getElementById('register-ethnicity').value,
+                        dietary_preference: document.getElementById('register-diet').value,
+                        activity_level: document.getElementById('register-activity').value,
+                        family_history_diabetes: document.getElementById('register-family-history').checked
+                    })
+                });
+                Swal.fire('Registered', 'Account created successfully. You can log in now.', 'success');
+                switchTab('login');
+            } catch (error) {
+                Swal.fire('Registration failed', error.message, 'error');
+            }
+        });
+    </script>
+</body>
+</html>
