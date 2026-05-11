@@ -40,6 +40,9 @@
                 <input id="login-email" class="input" type="email" placeholder="Email" required>
                 <input id="login-password" class="input" type="password" placeholder="Password" required>
                 <button class="btn btn-primary" type="submit">Login</button>
+                <div class="forgot-password-link">
+                    <a href="#" id="forgot-password-link" onclick="showForgotPasswordModal()">Forgot Password?</a>
+                </div>
             </form>
 
             <form id="register-form" class="space-y-4 hidden">
@@ -70,6 +73,23 @@
         </section>
     </main>
 
+    <!-- Forgot Password Modal -->
+    <div id="forgot-password-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Reset Password</h3>
+                <button class="modal-close" onclick="closeModal('forgot-password-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Enter your email address and we'll send you a password reset link.</p>
+                <form id="forgot-password-form" class="space-y-4">
+                    <input id="reset-email" class="input" type="email" placeholder="Enter your email" required>
+                    <button class="btn btn-primary" type="submit">Send Reset Link</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script>
         const loginTab = document.getElementById('login-tab');
         const registerTab = document.getElementById('register-tab');
@@ -82,6 +102,14 @@
             registerTab.classList.toggle('is-active', !loginMode);
             loginForm.classList.toggle('hidden', !loginMode);
             registerForm.classList.toggle('hidden', loginMode);
+        }
+
+        function showForgotPasswordModal() {
+            document.getElementById('forgot-password-modal').classList.remove('hidden');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
         }
 
         loginTab.addEventListener('click', () => switchTab('login'));
@@ -114,6 +142,24 @@
                 window.location.href = '/dashboard';
             } catch (error) {
                 Swal.fire('Login failed', error.message, 'error');
+            }
+        });
+
+        // Forgot password form handler
+        document.getElementById('forgot-password-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            try {
+                const payload = await apiRequest('/auth/forgot-password', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        email: document.getElementById('reset-email').value
+                    })
+                });
+
+                Swal.fire('Reset Link Sent', 'If your email is registered, you will receive a password reset link shortly.', 'success');
+                closeModal('forgot-password-modal');
+            } catch (error) {
+                Swal.fire('Reset Failed', error.message, 'error');
             }
         });
 
