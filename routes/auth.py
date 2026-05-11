@@ -82,3 +82,57 @@ def login():
 @token_required
 def me():
     return jsonify({"user": request.current_user.to_dict()}), 200
+
+
+@auth_bp.route("/auth/forgot-password", methods=["POST"])
+def forgot_password():
+    data = request.get_json() or {}
+    email = data.get("email", "").strip().lower()
+    
+    if not email:
+        return jsonify({"error": "Email is required"}), 400
+    
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        return jsonify({"error": "Email not found"}), 404
+    
+    # Generate password reset token (simplified for demo)
+    reset_token = f"reset_{user.id}_{datetime.utcnow().strftime('%Y%m%d%H%M%S')}"
+    
+    # In a real application, you would send an email here
+    # For demo purposes, we'll return the token directly
+    return jsonify({
+        "message": "Password reset token generated",
+        "reset_token": reset_token,
+        "note": "In production, this would be sent via email"
+    }), 200
+
+
+@auth_bp.route("/auth/reset-password", methods=["POST"])
+def reset_password():
+    data = request.get_json() or {}
+    token = data.get("token", "").strip()
+    new_password = data.get("new_password", "").strip()
+    
+    if not token or not new_password:
+        return jsonify({"error": "Token and new password are required"}), 400
+    
+    # Validate token format (simplified for demo)
+    if not token.startswith("reset_"):
+        return jsonify({"error": "Invalid token"}), 400
+    
+    # Extract user ID from token (simplified)
+    try:
+        user_id = int(token.split("_")[1].split("_")[0])
+        user = User.query.get(user_id)
+        if not user:
+            return jsonify({"error": "Invalid token"}), 400
+        
+        # Update password
+        user.password_hash = hash_password(new_password)
+        db.session.commit()
+        
+        return jsonify({"message": "Password reset successful"}), 200
+        
+    except (ValueError, IndexError):
+        return jsonify({"error": "Invalid token"}), 400
