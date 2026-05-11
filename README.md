@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # MRFI - Metabolic Resonance Field Intelligence
 
 Advanced AI-powered metabolic monitoring system that leverages quantum-inspired resonance field analysis to predict diabetes risk trajectories. MRFI transforms traditional glucose monitoring into a sophisticated multi-dimensional intelligence platform that detects metabolic patterns before clinical manifestation, utilizing resonance field algorithms to analyze the complex interplay between glucose dynamics, metabolic drift, insulin sensitivity, and lifestyle factors.
@@ -134,3 +135,6 @@ MRFI is an advanced research and engineering system for metabolic monitoring and
 ## Viva Preparation
 
 See [VIVA_NOTES.md](C:/Users/ThatipartiChandu/OneDrive/Dokumen/Diabaties-MRFI/VIVA_NOTES.md) for architecture, algorithm rationale, and likely discussion questions.
+=======
+# mini-project-MRFI
+>>>>>>> 955100e28a21dc306dd08933c911581109535114
